@@ -39,19 +39,7 @@ export default function TabLayout() {
                     ),
                 }}
             />
-            <Tabs.Screen
-                name="cards"
-                options={{
-                    title: "Cartões",
-                    tabBarIcon: ({ color }) => (
-                        <MaterialCommunityIcons
-                            size={28}
-                            name="cards"
-                            color={color}
-                        />
-                    ),
-                }}
-            />
+
             <Tabs.Screen
                 name="reminders"
                 options={{

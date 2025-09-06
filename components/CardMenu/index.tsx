@@ -1,13 +1,14 @@
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 export type CardMenuProps = {
     label: string;
     color: string;
+    onClick: () => void;
 };
 
-export function CardMenu({ label, color }: CardMenuProps) {
+export function CardMenu({ label, color, onClick }: CardMenuProps) {
     return (
-        <View
+        <TouchableOpacity
             style={{
                 backgroundColor: color,
                 width: "45%",
@@ -17,10 +18,15 @@ export function CardMenu({ label, color }: CardMenuProps) {
                 borderRadius: 24,
                 boxShadow: "0px 2px 2px #22222230",
             }}
+            onPress={onClick}
         >
-            <Text style={{ fontSize: 24, color: "white", fontWeight: "bold" }}>
-                {label}
-            </Text>
-        </View>
+            <View>
+                <Text
+                    style={{ fontSize: 24, color: "white", fontWeight: "bold" }}
+                >
+                    {label}
+                </Text>
+            </View>
+        </TouchableOpacity>
     );
 }

@@ -1,18 +1,37 @@
 import { CardMenu } from "@/components/CardMenu";
 import { ReminderCard } from "@/components/ReminderCard";
 import { Scroll } from "@/components/Scroll";
+import { useSQL } from "@/hooks/useSQL";
+import { useRouter } from "expo-router";
+import { useEffect } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function HomeScreen() {
+    const router = useRouter();
+    const { db, reminders, getReminders, removeReminder } = useSQL();
+
+    useEffect(() => {
+        if (db) {
+            getReminders();
+        }
+    }, [db]);
+
     return (
         <Scroll>
             <View style={styles.sectionContainer}>
                 <Text style={styles.menuTitle}>Menu</Text>
 
                 <View style={styles.menuStyle}>
-                    <CardMenu label="Notas" color="#E41852" />
-                    <CardMenu label="Cartões" color="#269DE8" />
-                    <CardMenu label="Lembretes" color="#EE900E" />
+                    <CardMenu
+                        label="Notas"
+                        color="#E41852"
+                        onClick={() => router.push("/(tabs)/grades")}
+                    />
+                    <CardMenu
+                        label="Lembretes"
+                        color="#EE900E"
+                        onClick={() => router.push("/(tabs)/reminders")}
+                    />
                 </View>
             </View>
 
@@ -22,10 +41,20 @@ export default function HomeScreen() {
                 <ScrollView
                     contentContainerStyle={{ flexDirection: "column", gap: 8 }}
                 >
-                    <ReminderCard />
-                    <ReminderCard />
-                    <ReminderCard />
-                    <ReminderCard />
+                    {reminders.length > 0 ? (
+                        reminders.map((reminder) => (
+                            <ReminderCard
+                                key={reminder.id}
+                                content={reminder.content}
+                                onCheck={() => removeReminder(reminder.id)}
+                            />
+                        ))
+                    ) : (
+                        <Text>
+                            Vá para a aba de lembretes e adicione novos para não
+                            se esquecer de nada!
+                        </Text>
+                    )}
                 </ScrollView>
             </View>
         </Scroll>
